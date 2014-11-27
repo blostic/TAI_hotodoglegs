@@ -1,66 +1,152 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Example CouchApp</title>
-    <link rel="stylesheet" href="style/main.css" type="text/css">
-  </head>
-  <body>
-    <div id="account"></div>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1">
+        <title>HotDogLegs!</title>
+        <link rel="stylesheet" href="style/main.css" type="text/css"/>
+        <link rel="stylesheet" href="style/jquery.mobile-1.0.css" type="text/css"/>
+        <link rel="stylesheet" href="style/jquery-ui-1.8.17.custom.css" type="text/css"/>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.0/jquery-ui.min.js"></script>
+        <!--<script src="vendor/couchapp/loader.js"></script>-->
+        <script src="script/init.js"></script>
+        <link href="style/app.css" rel="stylesheet" type="text/css">
+        <script src="script/jquery.ssd-vertical-navigation.min.js"></script>
+        <!--<script src="script/app.js"></script>-->
+        <!--<script src="logic.js"></script>-->
+    </head>
+<body>
 
-    <h1>Example CouchApp</h1>
 
-    <div id="profile">
-    </div>
-    <div id="content"></div>
+<div id="contentWrapper">
 
-    <div id="sidebar">
-      <p>Edit welcome message.</p>
-      <p>Ideas: You could easily turn this into a photo sharing app, 
-          or a grocery list, or a chat room. <a href="https://github.com/couchapp/example">Code for this app is on Github.</a></p>
-    </div>
-  </body>
-  <script src="/_utils/script/sha1.js"></script>
-  <script src="/_utils/script/json2.js"></script>
-  <script src="/_utils/script/jquery.js"></script>
-  <script src="/_utils/script/jquery.couch.js"></script>
-  <script src="vendor/couchapp/jquery.couchLogin.js"></script>
-  <script src="vendor/couchapp/jquery.couchProfile.js"></script>
-  <script src="vendor/couchapp/md5.js"></script>
-  <script src="vendor/couchapp/jquery.mustache.js"></script>
+    <div id="contentLeft">
 
-<!-- templates used by app.js -->
-  <script id="new-message" type="text/x-mustache" charset="utf-8">
-      <div class="avatar">
-        {{#gravatar_url}}<img src="{{gravatar_url}}"/>{{/gravatar_url}}
-        <div class="name">
-          {{name}}
-        </div>
-      </div>
-      <form id="create-message">
-        <label>New message from {{nickname}}: <input type="text" name="message" size=60 value=""></label>
-      </form>
-      <div style="clear:left;"></div>
-  </script>
+        <ul id="leftNavigation">
 
-  <script id="recent-messages" type="text/x-mustache" charset="utf-8">
-        <h3>Recent Messages</h3>
-        <ul id="items">
-          {{#items}}
-            <li>
-              <div class="avatar">
-                {{#gravatar_url}}<img src="{{gravatar_url}}" alt="{{name}}"/>{{/gravatar_url}}
-                <div class="name">
-                  {{nickname}}
-                </div>
-              </div>
-              <p>{{message}}</p>
-              <div style="clear:left;"></div>
+            <li class="active">
+                <a href="#"><i class="fa fa-truck leftNavIcon"></i> GRAJ!</a>
             </li>
-          {{/items}}
-        </ul>
-        <p><em>Protip:</em> If you setup continuous replication between this database and a remote one, this list will reflect remote changes in near real-time.</p>
-        <p>This would be a good place to add pagination.</p>
-  </script>
-  <script src="script/app.js"></script>
+            <li>
+                <a href="#"><i class="fa fa-coffee leftNavIcon"></i> ZALOGUJ</a>
+            </li>
+            <li>
+                <a href="#"><i class="fa fa-flask leftNavIcon"></i> EDYTUJ</a>
+            </li>
+            <li>
+                <a href="#"><i class="fa fa-envelope-o leftNavIcon"></i> DODAJ NOWE</a>
+            </li>
 
+        </ul>
+
+    </div>
+
+    <div id="contentRight">
+        <div class="active game">
+            <h1 id="heading">Zgadnij Kotku co mam w środku!</h1>
+            <p> Gdzie są parówki?!</p>
+            <div id="game-question"></div>
+        </div>
+    </div>
+
+</div>
+
+
+<!--<div data-role="page" data-theme="b"id="tagListPage">-->
+
+    <!--<div data-role="header" data-position="fixed">-->
+        <!--<div data-role="controlgroup" data-type="horizontal">-->
+            <!--<a>0.1.5 select a tag</a>-->
+            <!--<a href="#addPage" data-transition="slideup" data-role="button"  >Add Item</a>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div data-role="content" id="tagListContent" >-->
+
+    <!--</div>-->
+    <!--<div data-role="footer" id="tagListFooter" data-position="fixed">-->
+        <!--<div data-role="controlgroup" data-type="horizontal">-->
+            <!--<a href="#addPage" data-transition="slideup" data-role="button" >Add Item</a>-->
+            <!--<a href="#tagListPage" data-transition="slideup" data-role="button" >TagList</a>-->
+        <!--</div>-->
+    <!--</div>-->
+
+<!--</div>-->
+
+<!--<div data-role="page" data-theme="b"id="titleListPage">-->
+
+    <!--<div data-role="header" data-position="fixed">-->
+        <!--<h1>select a note</h1>-->
+        <!--<a href="#addPage" data-transition="slideup" >Add Item</a>-->
+        <!--<a href="#tagListPage" data-icon="grid" >TagList</a>-->
+    <!--</div>-->
+    <!--<div data-role="content" id="titleListContent" >-->
+
+    <!--</div>-->
+    <!--<div data-role="footer" data-position="fixed">-->
+        <!--<a href="#addPage" data-transition="slideup" >  Add Item  </a>-->
+        <!--<a href="#tagListPage" data-icon="grid" >  TagList   </a>-->
+    <!--</div>-->
+
+<!--</div>-->
+
+<!--<div data-role="page" data-theme="b" id="addPage">-->
+
+    <!--<div data-role="header"  >-->
+        <!--<p>add a single item - addPage</p>-->
+        <!--<a href="#tagListPage" data-icon="grid" class="ui-btn-right">tag list</a>-->
+    <!--</div>-->
+
+    <!--<div data-role="content" id="addContent" >-->
+        <!--<a>add content in index.html </a>-->
+    <!--</div>-->
+
+    <!--<div data-role="footer" id="addFooter" >-->
+        <!--<div data-role="controlgroup" data-type="horizontal">-->
+        <!--<a href="#tagListPage" id="addCancelButton" data-role="button" data-theme="d">Cancel and go to taglist</a>-->
+        <!--<input type="submit" value="add new - Submit" data-role="button" data-theme="a">-->
+        <!--</div>-->
+    <!--</div>-->
+
+<!--</div>-->
+
+<!--<div data-role="page" data-theme="b" id="editPage">-->
+    <!--<div data-role="header"  >-->
+        <!--<p>edit a single item - editpage</p>-->
+        <!--<a href="#tagListPage" data-icon="grid" class="ui-btn-right">tag list</a>-->
+    <!--</div>-->
+    <!--<div data-role="content" id="editContent" >-->
+        <!--<a>edit content in index.html </a>-->
+    <!--</div>-->
+    <!--<div data-role="footer" id="editFooter"  >-->
+        <!--<div data-role="controlgroup" data-type="horizontal">-->
+            <!--<a op="delete" href="#titleListPage" data-role="button" data-theme="b" >DELETE Note</a>-->
+            <!--<a href="#titleListPage" data-role="button" data-theme="d" >Select other Note</a>-->
+            <!--<a href="#addPage" data-role="button" data-theme="d" >Add Item</a>-->
+            <!--<a href="#tagListPage" data-role="button" data-theme="d" >TagList</a>-->
+            <!--<a op="save" href="#titleListPage"  data-role="button" data-theme="a" >SAVE Note</a>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+
+<!--<div data-role="page" data-theme="b" id="errorPage">-->
+    <!--<div data-role="header" id="errorHeader" data-nobackbtn="true">-->
+        <!--<a href="#tagListPage" data-icon="grid" class="ui-btn-right">tag list</a>-->
+    <!--</div>-->
+    <!--<div data-role="content" id="errorContent" >-->
+        <!--error content-->
+    <!--</div>-->
+    <!--<div data-role="footer" id="errorFooter"  >-->
+        <!--<div class="ui-body ui-body-b">-->
+            <!--<ul class="ui-block-b">-->
+                <!--<li> <a href="#titleListPage"  data-role="button" data-theme="d">  Select other Note  </a> </li>-->
+                <!--<li> <a href="#addPage"  data-role="button" data-theme="d">   Add Item   </a> </li>-->
+                <!--<li> <a href="#tagListPage"  data-role="button" data-theme="d">   TagList   </a> </li>-->
+            <!--</ul>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+
+
+</body>
 </html>
