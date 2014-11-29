@@ -1,5 +1,5 @@
-$dbname = "enotes";
-$appname= "enotes";
+$dbname = "dbtest";
+$appname= "couch_tai_project";
 $db = $.couch.db($dbname);
 
 $("body").data =    { "tagSelected" : "NOTAG"
