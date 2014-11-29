@@ -1,6 +1,5 @@
-// Apache 2.0 J Chris Anderson 2011
+
 $(function() {   
-    // friendly helper http://tinyurl.com/6aow6yn
     $.fn.serializeObject = function() {
         var o = {};
         var a = this.serializeArray();
@@ -63,6 +62,5 @@ $(function() {
             $("#profile").html('<p>Please log in to see your profile.</p>');
         }
     });
-
  });
 
