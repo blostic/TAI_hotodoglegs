@@ -1,0 +1,1 @@
+In setup - commands to run in order to set an admin on database
