@@ -46,7 +46,7 @@ $(function() {
     $("#account").couchLogin({
         loggedIn : function(r) {
             $("#profile").couchProfile(r, {
-                profileReady : function(profile) {
+                profileReady : function(profile) {              //changes here for the form to alter quizes... I guess
                     $("#create-message").submit(function(e){
                         e.preventDefault();
                         var form = this, doc = $(form).serializeObject();
@@ -59,7 +59,7 @@ $(function() {
             });
         },
         loggedOut : function() {
-            $("#profile").html('<p>Please log in to see your profile.</p>');
+            $("#profile").html('<p>Please log in to edit your quizes.</p>');
         }
     });
  });
