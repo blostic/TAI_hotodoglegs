@@ -7,30 +7,6 @@
     <title>HotDogLegs!</title>
     <link rel="stylesheet" href="style/main.css" type="text/css"/>
     <link rel="stylesheet" href="style/jquery-ui-1.8.17.custom.css" type="text/css"/>
-    <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>-->
-    <!--<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.0/jquery-ui.min.js"></script>-->
-    <!--<script src="/_utils/script/sha1.js"></script>-->
-    <!--<script src="/_utils/script/json2.js"></script>-->
-    <!--<script src="/_utils/script/jquery.js"></script>-->
-    <!--<script src="../vendor/couchapp/_attachments/jquery.couch.js"></script>-->
-    <!--<script src="../vendor/couchapp/_attachments/jquery.couchLogin.js"></script>-->
-    <!--<script src="../vendor/couchapp/_attachments/jquery.couchProfile.js"></script>-->
-    <!--<script src="../vendor/couchapp/_attachments/md5.js"></script>-->
-    <!--<script src="../vendor/couchapp/_attachments/jquery.mustache.js"></script>-->
-    <!--<script src="vendor/couchapp/loader.js"></script>-->
-
-    <!--<script src="/_utils/script/sha1.js"></script>-->
-    <!--<script src="/_utils/script/json2.js"></script>-->
-    <!--<script src="../vendor/couchapp/_attachments/jquery-1.7.1.min.js"></script>-->
-    <!--<script src="../vendor/couchapp/_attachments/jquery.couch.js"></script>-->
-    <!--<script src="../vendor/couchapp/_attachments/jquery.couchLogin.js"></script>-->
-    <!--<script src="../vendor/couchapp/_attachments/jquery.couchProfile.js"></script>-->
-    <!--<script src="../vendor/couchapp/_attachments/md5.js"></script>-->
-    <!--<script src="../vendor/couchapp/_attachments/jquery.mustache.js"></script>-->
-
-    <!--<script src="/_utils/script/sha1.js"></script>-->
-    <!--<script src="/_utils/script/json2.js"></script>-->
-    <!--<script src="/_utils/script/jquery.js"></script>-->
 
     <script src="/_utils/script/json2.js"></script>
     <script src="/_utils/script/jquery.js?1.2.6"></script>
@@ -78,13 +54,13 @@
                     <input type="text" name="_title" id="_title" placeholder="Title" multiple="multiple" />
                     <input type="text" name="_description" id="_description" placeholder="Description" multiple="multiple" />
                     <input type="text" name="_rev" id="_rev" placeholder="Revision ID" value="ysdkskdf;ksldkf" style="display: none"/>
-                    <input type="file" name="_attachments" id="_attachments" multiple="multiple" />
-                    <input type="submit" class="Submit" value="Submit" />
+                    <input type="file" class="fileUpload" name="_attachments" id="_attachments" multiple="multiple" />
+                    <input type="submit" class="Submit" value="Submit"  style="display: none" />
                 </form>
                 <form class="documentForm2" method="post" action="" enctype="multipart/form-data">
                     <input type="text" name="_rev" id="_rev2" placeholder="Revision ID" value="ysdkskdf;ksldkf" style="display: none"/>
-                    <input type="file" name="_attachments" id="_attachments2" multiple="multiple" />
-                    <input type="submit" class="Submit" value="Submit" style="display: none"/>
+                    <input type="file" class ="fileUpload" name="_attachments" id="_attachments2" multiple="multiple" />
+                    <input type="submit" class="Submit" value="Submit"/>
                 </form>
             </div>
         </div>

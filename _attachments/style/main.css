@@ -196,9 +196,99 @@ color {  0% {
     transition: opacity 0.2s ease-in-out;
 }
 
-#cover.display {
-    background: rgba(0, 0, 0, 0.2);
-    opacity: 1;
-    visibility: visible;
+/*#cover.display {*/
+    /*background: rgba(0, 0, 0, 0.2);*/
+    /*opacity: 1;*/
+    /*visibility: visible;*/
+/*}*/
+
+.documentForm input,
+.documentForm2 input {
+    display: flex;
+    margin: 8px;
+    padding: 7px;
+    width: 200px;
+    border-radius: 10px 10px 10px 10px;
+    -moz-border-radius: 10px 10px 10px 10px;
+    -webkit-border-radius: 10px 10px 10px 10px;
+    border: 1px solid #000000;
+    margin-left: auto;
+    margin-right: auto;
 }
 
+input.fileUpload {
+    padding-left: 0px;
+    border: 0px;
+}
+
+#new-game {
+    text-align: center;
+    max-width: 500px;
+    text-align: center;
+    margin: auto;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    border-radius: 10px 10px 10px 10px;
+    -moz-border-radius: 10px 10px 10px 10px;
+    -webkit-border-radius: 10px 10px 10px 10px;
+    border: 1px solid #E5E5E5;
+    background:rgba(0,0,0,0.5);
+    color: white;
+}
+input.Submit {
+    padding-left: 70px;
+    font-weight: 900;
+}
+
+input.Submit:active {
+    position: relative;
+    top: 3px;
+}
+
+#game {
+    background: rgba(0,0,0,0.5);
+    color: white;
+    text-align: center;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    border-radius: 10px 10px 10px 10px;
+    -moz-border-radius: 10px 10px 10px 10px;
+    -webkit-border-radius: 10px 10px 10px 10px;
+}
+#game h1 {
+    background: rgba(0,0,0,0.5);
+    width: 80%;
+    margin: auto;
+    padding: 15px;
+
+}
+#game-question {
+    width: 90%;
+    margin: auto;
+}
+#game-question img {
+    padding-bottom: 15px;
+}
+
+#game-question button {
+    font-size: 23px;
+    color: white;
+    font-weight: bold;
+}
+
+/*input.fileUpload{*/
+    /*display: none;*/
+/*}*/
+
+/*.newUpload {*/
+    /*cursor: pointer;*/
+    /*background-image: url("../image/upload.png");*/
+    /*background-size: contain;*/
+    /*background-repeat: no-repeat;*/
+    /*width: 100px;*/
+    /*height: 100px;*/
+/*}*/
+
+body {
+ background-image: url("../image/background.jpg");
+}

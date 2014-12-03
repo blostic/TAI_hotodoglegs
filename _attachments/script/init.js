@@ -171,7 +171,7 @@ $(document).ready(function () {
 
     // submit new questionnaire
     $(function () {
-        $('form.documentForm').submit(function (e) {
+        $('form.documentForm2').submit(function (e) {
             e.preventDefault();
             $.couch.db(databaseName).openDoc(imagesDb, {
                 success: function (couchDoc) {
@@ -239,6 +239,14 @@ $(document).ready(function () {
         Math.floor((Math.random() * Object.keys.length));
         var randomIndex = Math.floor((Math.random() * Object.keys(questionnaires).length));
         createGamePage(questionnaires[Object.keys(questionnaires)[randomIndex]]);
+    });
+
+    $('#upload_1').bind("click" , function () {
+        $('#_attachments').click();
+    });
+
+    $('#upload_2').bind("click" , function () {
+        $('#_attachments2').click();
     });
 
 });
