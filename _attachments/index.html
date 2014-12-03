@@ -54,7 +54,6 @@
         <div id="contentLeft">
             <ul id="leftNavigation">
                 <li class="active"> <a href="#game"><i class="fa fa-truck leftNavIcon"></i> GRAJ!</a></li>
-                <li> <a href="#login"><i class="fa fa-coffee leftNavIcon"></i> ZALOGUJ</a> </li>
                 <li> <a href="#edit"><i class="fa fa-flask leftNavIcon"></i> EDYTUJ</a> </li>
                 <li> <a href="#new-game"><i class="fa fa-envelope-o leftNavIcon"></i> DODAJ NOWE</a> </li>
             </ul>
@@ -68,9 +67,6 @@
             </div>
 
             <div id="edit" class="content inactive ">
-            </div>
-
-            <div id="login" class="content inactive ">
                   <div id="profile"></div>
                   <div id="content"></div>
                   <span class="navbar-nav navbar-right" id="account"></span>
@@ -103,9 +99,13 @@
 <!-- templates used by app.js -->
  <script id="new-message" type="text/x-mustache" charset="utf-8">
   <form id="create-message" role="form">
-    <div class="form-group">      
-      <input type="text" class="form-control" placeholder="Message" name="message" value="">
-    </div>
+     <h1> Edytuj swój quiz! </h1>
+                <form class="documentForm" method="post" action="" enctype="multipart/form-data">       //TUTAJ ZMIEŃ, żeby edytował rzeczywiście :)
+                    <input type="text" name="_db" id="_db" placeholder="Database ID" value="testdb"/>
+                    <input type="text" name="_id" id="_id" placeholder="Document ID" value="images"/>
+                    <input type="text" name="_rev" id="_rev" placeholder="Revision ID" />
+                    <input type="file" name="_attachments" id="_attachments" multiple="multiple" />
+                    <input type="submit" class="Submit" value="Submit" />
   </form>
   </script>
 
