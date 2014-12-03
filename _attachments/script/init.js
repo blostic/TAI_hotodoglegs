@@ -7,6 +7,8 @@ $(document).ready(function(){
     var currentDatabase = 'testdb';
     var imagesDb = 'images';
     var userID = 'WerwNPKl';
+    var currentQuestionnaire = "questionnaire_Test";
+    var questionnairesCollectionName = "questionnaires";
 
     var addImage  = function(src, slotId, imgId){
         var imgSlot = $('<div></div>');
@@ -26,9 +28,19 @@ $(document).ready(function(){
     $(function() {
         $('#leftNavigation').ssdVerticalNavigation();
     });
-    $(function() {
-        addImage("image/hot1.jpg", 'dynamic1', "dynamicImage1");
-        addImage("image/hot2.jpg", 'dynamic2', "dynamicImage2");
+
+    $.couch.db(currentDatabase).openDoc(currentQuestionnaire, {
+        success: function (couchDoc) {
+            console.log(couchDoc);
+            $(function() {
+                if (couchDoc['hot_dog_image_filename'] && couchDoc['legs_image_filename']) {
+                    addImage("../../images/" + couchDoc['hot_dog_image_filename'], 'dynamic1', "dynamicImage1");
+                    addImage("../../images/" + couchDoc['legs_image_filename'] , 'dynamic2', "dynamicImage2");
+                }
+            });
+        },
+        error: function (couchDoc) {
+        }
     });
 
     //navigation
@@ -45,6 +57,93 @@ $(document).ready(function(){
         });
     });
 
+    //update document
+    var updateDocument = function(dbs, oldDocumentName, newDocument) {
+        $.couch.db(dbs).openDoc(oldDocumentName, {
+            success: function(couchDoc) {
+                var couchDocument = couchDoc;
+                $.couch.db(dbs).removeDoc(couchDoc);
+                newDocument["_id"] = couchDocument;
+                $.couch.db(dbs).saveDoc(document, {
+                    success: function(){
+                        console.log("documentUpdated");
+                    }
+                });
+            },
+            error: function (status) {
+                newDocument["_id"] = oldDocumentName;
+                $.couch.db(dbs).saveDoc(newDocument, {
+                    success: function (couchDoc) {
+                        console.log("documentUpdated");
+                    }
+                })
+            }
+        });
+    };
+
+    var getPseudoUniqueID = function(){
+        return Math.random().toString(36).slice(2);
+    };
+
+    var generateQuestionnaireDocument = function (authorId, title, description,
+                                                  legSrc, hotDogSrc, hot_dog_points, legs_points) {
+        var newDocument = {};
+        newDocument['_id'] = getPseudoUniqueID();
+        newDocument['author'] = authorId;
+        newDocument['title'] = title;
+        newDocument['description'] = description;
+        newDocument['legSrc'] = legSrc;
+        newDocument['hotDogSrc'] = hotDogSrc;
+        newDocument["hot_dog_points"] = hot_dog_points;
+        newDocument["legs_points"] = legs_points;
+        return newDocument;
+    };
+
+//
+//    var getAllQuestionnaires = function(dbsName, questionnairesCollectionName){
+//        $.couch.db(dbsName).openDoc(questionnairesCollectionName, {
+//            success: function(couchDoc) {
+//                var couchDocument = couchDoc;
+//                console.log("getting dbs");
+//                return couchDocument;
+//            }, error: function(status) {
+//                console.log("ERRORRR");
+//                return null;
+//            }
+//
+//        });
+//    };
+
+    //expand document
+    var expandDocument = function(dbsName, oldDocumentName, newDocument) {
+        $.couch.db(dbsName).openDoc(oldDocumentName, {
+            success: function(couchDoc) {
+                var couchDocument = couchDoc;
+                setTimeout( function() {
+                    couchDocument[newDocument["_id"]] = newDocument;
+                    $.couch.db(dbsName).saveDoc(couchDocument, {
+                        success: function(){
+                            console.log("documentExpanded");
+                        }
+                    });
+                }, 500);
+            },
+            error: function (status) {
+                var couchDocument = {};
+                couchDocument["_id"] = oldDocumentName;
+                couchDocument[newDocument["_id"]] = newDocument;
+                $.couch.db(dbsName).saveDoc(couchDocument, {
+                    success: function(){
+                        console.log("documentExpanded");
+                    }
+                });
+            }
+        });
+    };
+
+
+//    console.log("here" + currentDatabase + questionnairesCollectionName + "\n");
+
     // document upload
     $(function() {
         $('form.documentForm').submit(function (e) {
@@ -55,7 +154,6 @@ $(document).ready(function(){
                     $('form.documentForm').ajaxSubmit({
                         url: "/" + currentDatabase + "/" + imagesDb,
                         success: function (response) {
-//                            alert("Your attachment was submitted.")
                         }
                     });
                 },
@@ -66,7 +164,6 @@ $(document).ready(function(){
                             $('form.documentForm').ajaxSubmit({
                                 url: "/" + currentDatabase + "/" + imagesDb,
                                 success: function (response) {
-//                                    alert("Your attachment was submitted.")
                                 }
                             })
                         }
@@ -103,27 +200,9 @@ $(document).ready(function(){
                 });
             }, 1000);
 
-//            $.couch.db(currentDatabase).openDoc("questionnaires", {
-//               success: function(){
-//
-//               },
-//                error: function(){
-//
-//                }
-//            });
-
-            var title = $('#_title').val();
-            var query = "questionnaire_" + title;
-            $.couch.db(currentDatabase).saveDoc(
-                {
-                    "_id": query,
-                    "title": $('#_title').val(),
-                    "description": $('#_description').val(),
-                    "hot_dog_image_filename" : $("form input#_attachments")[0].files[0].name,
-                    "legs_image_filename": $("form input#_attachments2")[0].files[0].name,
-                    "hot_dog_points" : 0,
-                    "legs_points" : 0
-                });
-            });
+            var document = generateQuestionnaireDocument(userID, $('#_title').val(), $('#_description').val(),
+                $("form input#_attachments")[0].files[0].name, $("form input#_attachments2")[0].files[0].name, 0,0);
+            expandDocument(currentDatabase, questionnairesCollectionName, document);
+        });
     });
 });

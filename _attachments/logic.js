@@ -41,7 +41,7 @@ function doStoreDocument(document) {
                 async : false,
                 success: function (data) {
                         $("body").data.docEdited = data.id;
-        $.log("store - success" + data.id + " " +  data.rev);
+                        $.log("store - success" + data.id + " " +  data.rev);
                         //  $.mobile.changePage("#editPage", "slidedown", true, true);
                 },
     error: function () {
