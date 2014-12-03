@@ -249,4 +249,12 @@ $(document).ready(function () {
         $('#_attachments2').click();
     });
 
+    $('#dice').bind("click" , function () {
+        getAllQuestionnaires(function (questionnaires) {
+            Math.floor((Math.random() * Object.keys.length));
+            var randomIndex = Math.floor((Math.random() * Object.keys(questionnaires).length));
+            createGamePage(questionnaires[Object.keys(questionnaires)[randomIndex]]);
+        });
+    });
+
 });
