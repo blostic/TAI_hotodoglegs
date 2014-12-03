@@ -2,7 +2,7 @@
  * Created by blost on 27.11.14.
  */
 
-$(document).ready(function(){
+$(document).ready(function () {
 
     var currentDatabase = 'testdb';
     var imagesDb = 'images';
@@ -10,7 +10,7 @@ $(document).ready(function(){
     var currentQuestionnaire = "questionnaire_Test";
     var questionnairesCollectionName = "questionnaires";
 
-    var addImage  = function(src, slotId, imgId){
+    var addImage = function (src, slotId, imgId) {
         var imgSlot = $('<div></div>');
         imgSlot.attr('id', slotId);
         imgSlot.appendTo('#game-question');
@@ -20,37 +20,34 @@ $(document).ready(function(){
         img.appendTo('#' + slotId);
 
         var submit = $('<button> Wybierz mnie!</button>');
-        submit.attr('id','db' + imgId);
+        submit.attr('id', 'db' + imgId);
         submit.appendTo('#' + slotId);
 
     };
 
-    $(function() {
-        $('#leftNavigation').ssdVerticalNavigation();
-    });
-
-    $.couch.db(currentDatabase).openDoc(currentQuestionnaire, {
-        success: function (couchDoc) {
-            console.log(couchDoc);
-            $(function() {
-                if (couchDoc['hot_dog_image_filename'] && couchDoc['legs_image_filename']) {
-                    addImage("../../images/" + couchDoc['hot_dog_image_filename'], 'dynamic1', "dynamicImage1");
-                    addImage("../../images/" + couchDoc['legs_image_filename'] , 'dynamic2', "dynamicImage2");
-                }
-            });
-        },
-        error: function (couchDoc) {
+    // creating main page
+    var createGamePage = function (questionnaire) {
+        console.log(questionnaire)
+        $('#game-question').empty();
+        if (questionnaire['hotDogSrc'] && questionnaire['legSrc']) {
+            if (Math.random() > 0.5) {
+                addImage("../../images/" + questionnaire['hotDogSrc'], 'dynamic1', "dynamicImage1");
+                addImage("../../images/" + questionnaire['legSrc'], 'dynamic2', "dynamicImage2");
+            } else {
+                addImage("../../images/" + questionnaire['legSrc'], 'dynamic2', "dynamicImage2");
+                addImage("../../images/" + questionnaire['hotDogSrc'], 'dynamic1', "dynamicImage1");
+            }
         }
-    });
+    };
 
     //navigation
     var content = $("#contentRight  .content")
-    $("#leftNavigation a").click(function(){
+    $("#leftNavigation a").click(function () {
         var href = $(this).attr("href").split("#")[1];
-        content.each(function(){
+        content.each(function () {
             $(this).addClass("inactive");
             $(this).removeClass("active");
-            if($(this).attr("id") == href) {
+            if ($(this).attr("id") == href) {
                 $(this).removeClass("inactive");
                 $(this).addClass("active");
             }
@@ -58,14 +55,14 @@ $(document).ready(function(){
     });
 
     //update document
-    var updateDocument = function(dbs, oldDocumentName, newDocument) {
+    var updateDocument = function (dbs, oldDocumentName, newDocument) {
         $.couch.db(dbs).openDoc(oldDocumentName, {
-            success: function(couchDoc) {
+            success: function (couchDoc) {
                 var couchDocument = couchDoc;
                 $.couch.db(dbs).removeDoc(couchDoc);
                 newDocument["_id"] = couchDocument;
                 $.couch.db(dbs).saveDoc(document, {
-                    success: function(){
+                    success: function () {
                         console.log("documentUpdated");
                     }
                 });
@@ -81,12 +78,11 @@ $(document).ready(function(){
         });
     };
 
-    var getPseudoUniqueID = function(){
+    var getPseudoUniqueID = function () {
         return Math.random().toString(36).slice(2);
     };
 
-    var generateQuestionnaireDocument = function (authorId, title, description,
-                                                  legSrc, hotDogSrc, hot_dog_points, legs_points) {
+    var generateQuestionnaireDocument = function (authorId, title, description, legSrc, hotDogSrc, hot_dog_points, legs_points) {
         var newDocument = {};
         newDocument['_id'] = getPseudoUniqueID();
         newDocument['author'] = authorId;
@@ -99,30 +95,34 @@ $(document).ready(function(){
         return newDocument;
     };
 
-//
-//    var getAllQuestionnaires = function(dbsName, questionnairesCollectionName){
-//        $.couch.db(dbsName).openDoc(questionnairesCollectionName, {
-//            success: function(couchDoc) {
-//                var couchDocument = couchDoc;
-//                console.log("getting dbs");
-//                return couchDocument;
-//            }, error: function(status) {
-//                console.log("ERRORRR");
-//                return null;
-//            }
-//
-//        });
-//    };
+    // getting all questionnaires, deliver it to callback function and call it
+    var getAllQuestionnaires = function (dbsName, questionnairesCollectionName, callback) {
+        return $.couch.db(dbsName).openDoc(questionnairesCollectionName, {
+            success: function (couchDoc) {
+                var couchDocuments = {};
+                for (var questionnaire_index in couchDoc) {
+                    if (questionnaire_index.length > 4) {
+                        couchDocuments[questionnaire_index] = couchDoc[questionnaire_index];
+                    }
+                }
+                callback(couchDocuments)
+//                console.log("changing documents");
+            }, error: function (status) {
+                console.log(status);
+            }
+
+        });
+    };
 
     //expand document
-    var expandDocument = function(dbsName, oldDocumentName, newDocument) {
+    var expandDocument = function (dbsName, oldDocumentName, newDocument) {
         $.couch.db(dbsName).openDoc(oldDocumentName, {
-            success: function(couchDoc) {
+            success: function (couchDoc) {
                 var couchDocument = couchDoc;
-                setTimeout( function() {
+                setTimeout(function () {
                     couchDocument[newDocument["_id"]] = newDocument;
                     $.couch.db(dbsName).saveDoc(couchDocument, {
-                        success: function(){
+                        success: function () {
                             console.log("documentExpanded");
                         }
                     });
@@ -133,7 +133,7 @@ $(document).ready(function(){
                 couchDocument["_id"] = oldDocumentName;
                 couchDocument[newDocument["_id"]] = newDocument;
                 $.couch.db(dbsName).saveDoc(couchDocument, {
-                    success: function(){
+                    success: function () {
                         console.log("documentExpanded");
                     }
                 });
@@ -141,11 +141,8 @@ $(document).ready(function(){
         });
     };
 
-
-//    console.log("here" + currentDatabase + questionnairesCollectionName + "\n");
-
-    // document upload
-    $(function() {
+    // submit new questionnaire
+    $(function () {
         $('form.documentForm').submit(function (e) {
             e.preventDefault();
             $.couch.db(currentDatabase).openDoc(imagesDb, {
@@ -157,9 +154,9 @@ $(document).ready(function(){
                         }
                     });
                 },
-                error: function (status) {
+                error: function () {
                     $.couch.db(currentDatabase).saveDoc({"_id": imagesDb}, {
-                            success: function (couchDoc) {
+                        success: function (couchDoc) {
                             $('.documentForm input#_rev').val(couchDoc.rev);
                             $('form.documentForm').ajaxSubmit({
                                 url: "/" + currentDatabase + "/" + imagesDb,
@@ -201,8 +198,21 @@ $(document).ready(function(){
             }, 1000);
 
             var document = generateQuestionnaireDocument(userID, $('#_title').val(), $('#_description').val(),
-                $("form input#_attachments")[0].files[0].name, $("form input#_attachments2")[0].files[0].name, 0,0);
+                $("form input#_attachments")[0].files[0].name, $("form input#_attachments2")[0].files[0].name, 0, 0);
             expandDocument(currentDatabase, questionnairesCollectionName, document);
         });
     });
+
+    $(function () {
+        $('#leftNavigation').ssdVerticalNavigation();
+    });
+
+
+    getAllQuestionnaires(currentDatabase, questionnairesCollectionName, function (questionnaires) {
+        Math.floor((Math.random() * Object.keys.length))
+        var randomIndex = Math.floor((Math.random() * Object.keys(questionnaires).length));
+        createGamePage(questionnaires[Object.keys(questionnaires)[randomIndex]]);
+    });
+
+
 });
