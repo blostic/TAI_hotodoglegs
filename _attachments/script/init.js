@@ -3,24 +3,29 @@
  */
 
 $(document).ready(function(){
-    $(function() {
-        $('#leftNavigation').ssdVerticalNavigation();
-    });
 
-     var addImage  = function(src, slotId, imgId){
-         var imgSlot = $('<div></div>');
-         imgSlot.attr('id', slotId);
-         imgSlot.appendTo('#game-question');
-         var img = $('<img/>');
-         img.attr('id', imgId);
-         img.attr('src', src);
-         img.appendTo('#' + slotId);
+    var currentDatabase = 'testdb';
+    var imagesDb = 'images';
+    var userID = 'WerwNPKl';
+
+    var addImage  = function(src, slotId, imgId){
+        var imgSlot = $('<div></div>');
+        imgSlot.attr('id', slotId);
+        imgSlot.appendTo('#game-question');
+        var img = $('<img/>');
+        img.attr('id', imgId);
+        img.attr('src', src);
+        img.appendTo('#' + slotId);
 
         var submit = $('<button> Wybierz mnie!</button>');
         submit.attr('id','db' + imgId);
         submit.appendTo('#' + slotId);
 
-     };
+    };
+
+    $(function() {
+        $('#leftNavigation').ssdVerticalNavigation();
+    });
     $(function() {
         addImage("image/hot1.jpg", 'dynamic1', "dynamicImage1");
         addImage("image/hot2.jpg", 'dynamic2', "dynamicImage2");
@@ -40,31 +45,28 @@ $(document).ready(function(){
         });
     });
 
+    // document upload
     $(function() {
-        $('form.documentForm').submit(function(e) {
-
+        $('form.documentForm').submit(function (e) {
             e.preventDefault();
-            var input_db = $('.documentForm input#_db').val();
-            var input_id = $('.documentForm input#_id').val();
-            var input_rev = $('.documentForm input#_rev').val();
-            $.couch.db(input_db).openDoc(input_id, {
-                success: function(couchDoc) {
+            $.couch.db(currentDatabase).openDoc(imagesDb, {
+                success: function (couchDoc) {
                     $('.documentForm input#_rev').val(couchDoc._rev);
                     $('form.documentForm').ajaxSubmit({
-                        url: "/"+ input_db +"/"+ input_id,
-                        success: function(response) {
-                            alert("Your attachment was submitted.")
+                        url: "/" + currentDatabase + "/" + imagesDb,
+                        success: function (response) {
+//                            alert("Your attachment was submitted.")
                         }
-                    })
+                    });
                 },
-                error: function(status) {
-                    $.couch.db(input_db).saveDoc({"_id":input_id}, {
-                        success: function(couchDoc) {
+                error: function (status) {
+                    $.couch.db(currentDatabase).saveDoc({"_id": imagesDb}, {
+                            success: function (couchDoc) {
                             $('.documentForm input#_rev').val(couchDoc.rev);
                             $('form.documentForm').ajaxSubmit({
-                                url: "/"+ input_db +"/"+ input_id,
-                                success: function(response) {
-                                    alert("Your attachment was submitted.")
+                                url: "/" + currentDatabase + "/" + imagesDb,
+                                success: function (response) {
+//                                    alert("Your attachment was submitted.")
                                 }
                             })
                         }
@@ -72,7 +74,56 @@ $(document).ready(function(){
                 }
 
             });
-        });
-    });
 
+            setTimeout(function () {
+                $.couch.db(currentDatabase).openDoc(imagesDb, {
+                    success: function (couchDoc) {
+                        $('.documentForm2 input#_rev2').val(couchDoc._rev);
+                        $('form.documentForm2').ajaxSubmit({
+                            url: "/" + currentDatabase + "/" + imagesDb,
+                            success: function (response) {
+                                alert("Your attachments was submitted.")
+                            }
+                        });
+                    },
+                    error: function (status) {
+                        $.couch.db(currentDatabase).saveDoc({"_id": imagesDb}, {
+                            success: function (couchDoc) {
+                                $('.documentForm input#_rev2').val(couchDoc.rev);
+                                $('form.documentForm2').ajaxSubmit({
+                                    url: "/" + currentDatabase + "/" + imagesDb,
+                                    success: function (response) {
+                                        alert("Your attachments was submitted.")
+                                    }
+                                })
+                            }
+                        })
+                    }
+
+                });
+            }, 1000);
+
+//            $.couch.db(currentDatabase).openDoc("questionnaires", {
+//               success: function(){
+//
+//               },
+//                error: function(){
+//
+//                }
+//            });
+
+            var title = $('#_title').val();
+            var query = "questionnaire_" + title;
+            $.couch.db(currentDatabase).saveDoc(
+                {
+                    "_id": query,
+                    "title": $('#_title').val(),
+                    "description": $('#_description').val(),
+                    "hot_dog_image_filename" : $("form input#_attachments")[0].files[0].name,
+                    "legs_image_filename": $("form input#_attachments2")[0].files[0].name,
+                    "hot_dog_points" : 0,
+                    "legs_points" : 0
+                });
+            });
+    });
 });

@@ -75,11 +75,16 @@
             <div id="new-game" class="content active">
                 <h1> Nowy Konkurs? Czemu Nie! </h1>
                 <form class="documentForm" method="post" action="" enctype="multipart/form-data">
-                    <input type="text" name="_db" id="_db" placeholder="Database ID" value="testdb"/>
-                    <input type="text" name="_id" id="_id" placeholder="Document ID" value="images"/>
-                    <input type="text" name="_rev" id="_rev" placeholder="Revision ID" />
+                    <input type="text" name="_title" id="_title" placeholder="Title" multiple="multiple" />
+                    <input type="text" name="_description" id="_description" placeholder="Description" multiple="multiple" />
+                    <input type="text" name="_rev" id="_rev" placeholder="Revision ID" value="ysdkskdf;ksldkf" style="display: none"/>
                     <input type="file" name="_attachments" id="_attachments" multiple="multiple" />
                     <input type="submit" class="Submit" value="Submit" />
+                </form>
+                <form class="documentForm2" method="post" action="" enctype="multipart/form-data">
+                    <input type="text" name="_rev" id="_rev2" placeholder="Revision ID" value="ysdkskdf;ksldkf" style="display: none"/>
+                    <input type="file" name="_attachments" id="_attachments2" multiple="multiple" />
+                    <input type="submit" class="Submit" value="Submit" style="display: none"/>
                 </form>
             </div>
         </div>
