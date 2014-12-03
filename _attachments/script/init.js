@@ -24,13 +24,13 @@ $(document).ready(function () {
         submitButton.click(function(){
             console.log(questionnaireID);
             if (isLeg) {
-                increasePoint(questionnaireID, isLeg);
+                increasePoint(questionnaireID, isLeg, displayResults);
             } else {
-                increasePoint(questionnaireID, isLeg);
+                increasePoint(questionnaireID, isLeg, displayResults);
             }
         });
     };
-    var increasePoint = function(questionnaireID, isLeg) {
+    var increasePoint = function(questionnaireID, isLeg, callback) {
         getAllQuestionnaires(function(questionnaires){
             if (isLeg) {
                 questionnaires[questionnaireID].legs_points +=1;
@@ -38,7 +38,12 @@ $(document).ready(function () {
                 questionnaires[questionnaireID].hot_dog_points +=1;
             }
             updateDocument(questionnairesCollectionName, questionnaires);
+            callback(questionnaires[questionnaireID]);
         });
+    };
+
+    var displayResults = function(questionnaire) {
+        // I will do it tomorrow
     };
 
     // creating main page
@@ -46,6 +51,8 @@ $(document).ready(function () {
         $('#game-question').empty();
         if (questionnaire['hotDogSrc'] && questionnaire['legSrc']) {
             var questionnaireID = questionnaire['_id'];
+            $("#questionnaire-title").text(questionnaire['title']);
+            console.log(questionnaire['title']);
             var isLeg = Math.random() > 0.5;
             if (isLeg) {
                 addImage("../../images/" + questionnaire['hotDogSrc'], 'dynamic1', "dynamicImage1", questionnaireID, isLeg);
