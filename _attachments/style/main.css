@@ -324,3 +324,10 @@ p#questionnaire-title{
 #current_score div {
     margin-right: auto;
 }
+
+#points{
+    position: absolute;
+    top: -60px;
+    right: 50px;
+    font-size: 80px;
+}

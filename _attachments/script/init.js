@@ -27,7 +27,6 @@ $(document).ready(function () {
             $("#game-question button").each(function(){
                 $(this).attr('disabled', 'disabled');
             });
-//            $("").setAttribute('disabled', 'disabled');
 
             setTimeout(function () {
                 getAllQuestionnaires(function (questionnaires) {
@@ -43,6 +42,9 @@ $(document).ready(function () {
         getAllQuestionnaires(function(questionnaires){
             if (isLeg) {
                 questionnaires[questionnaireID].legs_points += 1;
+                var points = parseInt($("#points").text());
+                points += 1;
+                $("#points").text(points.toString());
             } else {
                 questionnaires[questionnaireID].hot_dog_points += 1;
             }
