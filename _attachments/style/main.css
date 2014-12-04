@@ -313,3 +313,14 @@ p#questionnaire-title{
     -webkit-margin-before: 0.3em;
     -webkit-margin-after: 0.3em;
 }
+
+#current_score {
+    display: flex;
+    font-size: 50px;
+}
+#current_score div:first-child {
+    margin-left: auto;
+}
+#current_score div {
+    margin-right: auto;
+}

@@ -22,28 +22,58 @@ $(document).ready(function () {
         submitButton.attr('id', 'db' + imgId);
         submitButton.appendTo('#' + slotId);
         submitButton.click(function(){
-            console.log(questionnaireID);
-            if (isLeg) {
-                increasePoint(questionnaireID, isLeg, displayResults);
-            } else {
-                increasePoint(questionnaireID, isLeg, displayResults);
-            }
+            increasePoint(questionnaireID, isLeg, displayResults);
+
+            $("#game-question button").each(function(){
+                $(this).attr('disabled', 'disabled');
+            });
+//            $("").setAttribute('disabled', 'disabled');
+
+            setTimeout(function () {
+                getAllQuestionnaires(function (questionnaires) {
+                    Math.floor((Math.random() * Object.keys.length));
+                    var randomIndex = Math.floor((Math.random() * Object.keys(questionnaires).length));
+                    $("#current_score").empty();
+                    createGamePage(questionnaires[Object.keys(questionnaires)[randomIndex]]);
+                });
+            }, 3000);
         });
     };
     var increasePoint = function(questionnaireID, isLeg, callback) {
         getAllQuestionnaires(function(questionnaires){
             if (isLeg) {
-                questionnaires[questionnaireID].legs_points +=1;
+                questionnaires[questionnaireID].legs_points += 1;
             } else {
-                questionnaires[questionnaireID].hot_dog_points +=1;
+                questionnaires[questionnaireID].hot_dog_points += 1;
             }
             updateDocument(questionnairesCollectionName, questionnaires);
-            callback(questionnaires[questionnaireID]);
+            callback(questionnaires[questionnaireID], isLeg);
         });
     };
 
     var displayResults = function(questionnaire) {
-        // I will do it tomorrow
+          $("#leg-points").text(questionnaire.legs_points.toString());
+          $("#hot-dog-points").text(questionnaire.hot_dog_points.toString());
+    };
+
+    var addResultBox = function(hotDogFirst){
+        if (!hotDogFirst) {
+            var imgSlot = $('<div></div>');
+            imgSlot.attr('id', "leg-points");
+            imgSlot.appendTo('#current_score');
+
+            var imgSlot = $('<div></div>');
+            imgSlot.attr('id', "hot-dog-points");
+            imgSlot.appendTo('#current_score');
+        } else {
+            var imgSlot = $('<div></div>');
+            imgSlot.attr('id', "hot-dog-points");
+            imgSlot.appendTo('#current_score');
+
+            var imgSlot = $('<div></div>');
+            imgSlot.attr('id', "leg-points");
+            imgSlot.appendTo('#current_score');
+        }
     };
 
     // creating main page
@@ -52,14 +82,15 @@ $(document).ready(function () {
         if (questionnaire['hotDogSrc'] && questionnaire['legSrc']) {
             var questionnaireID = questionnaire['_id'];
             $("#questionnaire-title").text(questionnaire['title']);
-            console.log(questionnaire['title']);
             var isLeg = Math.random() > 0.5;
             if (isLeg) {
-                addImage("../../images/" + questionnaire['hotDogSrc'], 'dynamic1', "dynamicImage1", questionnaireID, isLeg);
-                addImage("../../images/" + questionnaire['legSrc'], 'dynamic2', "dynamicImage2", questionnaireID, isLeg);
+                addImage("../../images/" + questionnaire['hotDogSrc'], 'dynamic1', "dynamicImage1", questionnaireID, false);
+                addImage("../../images/" + questionnaire['legSrc'], 'dynamic2', "dynamicImage2", questionnaireID, true);
+                addResultBox(true);
             } else {
-                addImage("../../images/" + questionnaire['legSrc'], 'dynamic2', "dynamicImage2", questionnaireID, isLeg);
-                addImage("../../images/" + questionnaire['hotDogSrc'], 'dynamic1', "dynamicImage1", questionnaireID, isLeg);
+                addImage("../../images/" + questionnaire['legSrc'], 'dynamic2', "dynamicImage2", questionnaireID, true);
+                addImage("../../images/" + questionnaire['hotDogSrc'], 'dynamic1', "dynamicImage1", questionnaireID, false);
+                addResultBox(false);
             }
         }
     };
@@ -260,6 +291,7 @@ $(document).ready(function () {
         getAllQuestionnaires(function (questionnaires) {
             Math.floor((Math.random() * Object.keys.length));
             var randomIndex = Math.floor((Math.random() * Object.keys(questionnaires).length));
+            $("#current_score").empty();
             createGamePage(questionnaires[Object.keys(questionnaires)[randomIndex]]);
         });
     });
