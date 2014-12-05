@@ -194,74 +194,33 @@ var expandDocument = function (oldDocumentName, newDocument) {
     });
 };
 
-// submit new questionnaire
-$(function () {
-    $('form.documentForm2').submit(function (e) {
-        e.preventDefault();
-        $.couch.db(databaseName).openDoc(imagesCollectionName, {
-            success: function (couchDoc) {
-                $('.documentForm input#_rev').val(couchDoc._rev);
-                $('form.documentForm').ajaxSubmit({
-                    url: "/" + databaseName + "/" + imagesCollectionName,
-                    success: function (response) {
-                    }
-                });
-            }, error: function () {
-                $.couch.db(databaseName).saveDoc({"_id": imagesCollectionName}, {
-                    success: function (couchDoc) {
-                        $('.documentForm input#_rev').val(couchDoc.rev);
-                        $('form.documentForm').ajaxSubmit({
-                            url: "/" + databaseName + "/" + imagesCollectionName,
-                            success: function (response) {
-                            }
-                        })
-                    }
-                })
-            }
-
-        });
-
-        setTimeout(function () {
-            $.couch.db(databaseName).openDoc(imagesCollectionName, {
+var uploadImageFromForm = function(form, callback){
+    $.couch.db(databaseName).openDoc(imagesCollectionName, {
+        success: function (couchDoc) {
+            $(form + ' input._rev').val(couchDoc._rev);
+            $(form).ajaxSubmit({
+                url: "/" + databaseName + "/" + imagesCollectionName,
+                success: function () { callback() }
+            })
+        }, error: function () {
+            $.couch.db(databaseName).saveDoc({"_id": imagesCollectionName}, {
                 success: function (couchDoc) {
-                    $('.documentForm2 input#_rev2').val(couchDoc._rev);
-                    $('form.documentForm2').ajaxSubmit({
+                    $(form + ' input._rev').val(couchDoc.rev);
+                    $(form).ajaxSubmit({
                         url: "/" + databaseName + "/" + imagesCollectionName,
-                        success: function () {
-                            alert("Your attachments was submitted.")
-                        }
-                    });
-                },
-                error: function () {
-                    $.couch.db(databaseName).saveDoc({"_id": imagesCollectionName}, {
-                        success: function (couchDoc) {
-                            $('.documentForm input#_rev2').val(couchDoc.rev);
-                            $('form.documentForm2').ajaxSubmit({
-                                url: "/" + databaseName + "/" + imagesCollectionName,
-                                success: function () {
-                                    alert("Your attachments was submitted.")
-                                }
-                            })
-                        }
+                        success: function () { callback() }
                     })
                 }
-
-            });
-        }, 1000);
-
-        var document = generateQuestionnaireDocument(userID, $('#_title').val(), $('#_description').val(),
-            $("form input#_attachments")[0].files[0].name, $("form input#_attachments2")[0].files[0].name, 0, 0);
-        expandDocument(questionnairesCollectionName, document);
+            })
+        }
     });
-});
+};
 
 $(document).ready(function () {
-    $(function () {
-        $('#leftNavigation').ssdVerticalNavigation();
-    });
+
+    $('#leftNavigation').ssdVerticalNavigation();
 
     getAllQuestionnaires(function (questionnaires) {
-        Math.floor((Math.random() * Object.keys.length));
         var randomIndex = Math.floor((Math.random() * Object.keys(questionnaires).length));
         createGamePage(questionnaires[Object.keys(questionnaires)[randomIndex]]);
     });
@@ -282,10 +241,23 @@ $(document).ready(function () {
 
     $('#dice').bind("click", function () {
         getAllQuestionnaires(function (questionnaires) {
-            Math.floor((Math.random() * Object.keys.length));
-            var randomIndex = Math.floor((Math.random() * Object.keys(questionnaires).length));
             $("#current_score").empty();
+            var randomIndex = Math.floor((Math.random() * Object.keys(questionnaires).length));
             createGamePage(questionnaires[Object.keys(questionnaires)[randomIndex]]);
+        });
+    });
+
+    // submit new questionnaire
+    $('form.documentForm2').submit(function (e) {
+        e.preventDefault();
+        uploadImageFromForm('form.documentForm', function(){
+            uploadImageFromForm('form.documentForm2', function(){
+                var legSrc = $("form input#_attachments")[0].files[0].name;
+                var hotDog = $("form input#_attachments2")[0].files[0].name;
+                var document = generateQuestionnaireDocument(userID, $('#_title').val(), $('#_description').val(), legSrc, hotDog, 0, 0);
+                expandDocument(questionnairesCollectionName, document);
+                alert("Your questionnaires was submitted.");
+            })
         });
     });
 
