@@ -11,6 +11,7 @@ var addImage = function (src, slotId, imgId, questionnaireID, isLeg) {
     var imgSlot = $('<div></div>');
     imgSlot.attr('id', slotId);
     imgSlot.appendTo('#game-question');
+
     var img = $('<img/>');
     img.attr('id', imgId);
     img.attr('src', src);
@@ -33,7 +34,7 @@ var addImage = function (src, slotId, imgId, questionnaireID, isLeg) {
                 $("#current_score").empty();
                 createGamePage(questionnaires[Object.keys(questionnaires)[randomIndex]]);
             });
-        }, 3000);
+        }, 2000);
     });
 };
 
@@ -59,21 +60,18 @@ var displayResults = function (questionnaire) {
 };
 
 var addResultBox = function (hotDogFirst) {
-    var imgSlot = $('<div></div>');
+    var imgSlot1 = $('<div></div>');
+    var imgSlot2 = $('<div></div>');
+
+    imgSlot1.attr('id', "leg-points");
+    imgSlot2.attr('id', "hot-dog-points");
+
     if (!hotDogFirst) {
-        imgSlot.attr('id', "leg-points");
-        imgSlot.appendTo('#current_score');
-
-        imgSlot = $('<div></div>');
-        imgSlot.attr('id', "hot-dog-points");
-        imgSlot.appendTo('#current_score');
+        imgSlot1.appendTo('#current_score');
+        imgSlot2.appendTo('#current_score');
     } else {
-        imgSlot.attr('id', "hot-dog-points");
-        imgSlot.appendTo('#current_score');
-
-        imgSlot = $('<div></div>');
-        imgSlot.attr('id', "leg-points");
-        imgSlot.appendTo('#current_score');
+        imgSlot2.appendTo('#current_score');
+        imgSlot1.appendTo('#current_score');
     }
 };
 
@@ -83,8 +81,8 @@ var createGamePage = function (questionnaire) {
     if (questionnaire['hotDogSrc'] && questionnaire['legSrc']) {
         var questionnaireID = questionnaire['_id'];
         $("#questionnaire-title").text(questionnaire['title']);
-        var isLeg = Math.random() > 0.5;
-        if (isLeg) {
+        var isLegOnTheRight = Math.random() > 0.5;
+        if (isLegOnTheRight) {
             addImage("../../images/" + questionnaire['hotDogSrc'], 'dynamic1', "dynamicImage1", questionnaireID, false);
             addImage("../../images/" + questionnaire['legSrc'], 'dynamic2', "dynamicImage2", questionnaireID, true);
             addResultBox(true);
@@ -106,25 +104,20 @@ var updateDocument = function (oldDocumentName, newDocument) {
                     $.couch.db(databaseName).saveDoc(newDocument, {
                         success: function () {
                             console.log("documentUpdated");
-                        },
-                        error: function (status) {
+                        }, error: function (status) {
                             console.log(status);
                         }
-
                     });
-                },
-                error: function (status) {
+                }, error: function (status) {
                     console.log(status);
                 }
             });
-        },
-        error: function () {
+        }, error: function () {
             newDocument["_id"] = oldDocumentName;
             $.couch.db(databaseName).saveDoc(newDocument, {
                 success: function () {
                     console.log("documentUpdated");
-                },
-                error: function (status) {
+                }, error: function (status) {
                     console.log(status);
                 }
             })
@@ -151,7 +144,7 @@ var generateQuestionnaireDocument = function (authorId, title, description, legS
 
 // getting all questionnaires, deliver it to callback function and call it
 var getAllQuestionnaires = function (callback) {
-    return $.couch.db(databaseName).openDoc(questionnairesCollectionName, {
+    $.couch.db(databaseName).openDoc(questionnairesCollectionName, {
         success: function (couchDoc) {
             var couchDocuments = {};
             for (var questionnaire_index in couchDoc) {
@@ -171,17 +164,13 @@ var getAllQuestionnaires = function (callback) {
 var expandDocument = function (oldDocumentName, newDocument) {
     $.couch.db(databaseName).openDoc(oldDocumentName, {
         success: function (couchDoc) {
-            var couchDocument = couchDoc;
-            setTimeout(function () {
-                couchDocument[newDocument["_id"]] = newDocument;
-                $.couch.db(databaseName).saveDoc(couchDocument, {
-                    success: function () {
-                        console.log("documentExpanded");
-                    }
-                });
-            }, 500);
-        },
-        error: function () {
+            couchDoc[newDocument["_id"]] = newDocument;
+            $.couch.db(databaseName).saveDoc(couchDoc, {
+                success: function () {
+                    console.log("documentExpanded");
+                }
+            });
+        }, error: function () {
             var couchDocument = {};
             couchDocument["_id"] = oldDocumentName;
             couchDocument[newDocument["_id"]] = newDocument;
