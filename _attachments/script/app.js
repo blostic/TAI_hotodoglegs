@@ -32,7 +32,7 @@ $(function() {
                 $("#content").html(them);
             }
         });
-    };
+    }
     drawItems();
     var changesRunning = false;
     function setupChanges(since) {

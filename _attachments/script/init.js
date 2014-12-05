@@ -64,7 +64,7 @@ $(document).ready(function () {
             imgSlot.attr('id', "leg-points");
             imgSlot.appendTo('#current_score');
 
-            var imgSlot = $('<div></div>');
+            imgSlot = $('<div></div>');
             imgSlot.attr('id', "hot-dog-points");
             imgSlot.appendTo('#current_score');
         } else {
@@ -72,7 +72,7 @@ $(document).ready(function () {
             imgSlot.attr('id', "hot-dog-points");
             imgSlot.appendTo('#current_score');
 
-            var imgSlot = $('<div></div>');
+            imgSlot = $('<div></div>');
             imgSlot.attr('id', "leg-points");
             imgSlot.appendTo('#current_score');
         }
@@ -221,8 +221,7 @@ $(document).ready(function () {
                         success: function (response) {
                         }
                     });
-                },
-                error: function () {
+                },  error: function () {
                     $.couch.db(databaseName).saveDoc({"_id": imagesDb}, {
                         success: function (couchDoc) {
                             $('.documentForm input#_rev').val(couchDoc.rev);

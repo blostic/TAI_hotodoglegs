@@ -101,7 +101,6 @@ color {  0% {
 }
     30% {
         box-shadow: 0 0 10px 25px rgba(12, 121, 137, 0.5);
-        /* feather / spread */
     }
 }
 @keyframes
@@ -110,22 +109,8 @@ color {  0% {
 }
     30% {
         box-shadow: 0 0 10px 25px rgba(12, 121, 137, 0.5);
-        /* feather / spread */
     }
 }
-
-/*@keyframes curve {
-  0% {
-		transform: rotate(0deg)
-		           translate(0px)
-		           rotate(0deg);
-	}
-	100% {
-		transform: rotate(60deg)
-		           translate(200px)
-		           rotate(-60deg);
-	}
-}*/
 
 #nav-list {
     position: absolute;
@@ -195,12 +180,6 @@ color {  0% {
     -webkit-transition: opacity 0.2s ease-in-out;
     transition: opacity 0.2s ease-in-out;
 }
-
-/*#cover.display {*/
-    /*background: rgba(0, 0, 0, 0.2);*/
-    /*opacity: 1;*/
-    /*visibility: visible;*/
-/*}*/
 
 .documentForm input,
 .documentForm2 input {
@@ -275,19 +254,6 @@ input.Submit:active {
     color: white;
     font-weight: bold;
 }
-
-/*input.fileUpload{*/
-    /*display: none;*/
-/*}*/
-
-/*.newUpload {*/
-    /*cursor: pointer;*/
-    /*background-image: url("../image/upload.png");*/
-    /*background-size: contain;*/
-    /*background-repeat: no-repeat;*/
-    /*width: 100px;*/
-    /*height: 100px;*/
-/*}*/
 
 body {
  background-image: url("../image/background.jpg");
