@@ -79,29 +79,36 @@
   <script src="vendor/couchapp/jquery.mustache.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>-->
 <!-- templates used by app.js -->
+<script id="recent-messages" type="text/x-mustache" charset="utf-8">
+    <ul class="list-group" id="items">
+      {{#items}}
+        <li class="list-group-item">
+          <p>{{message}}</p>
+          <div><div class="name"><i>{{nickname}}</i></div></div>
+          <div style="clear:left;"></div>
+        </li>
+      {{/items}}
+    </ul>
+</script>
+
  <script id="new-message" type="text/x-mustache" charset="utf-8">
-  <form id="create-message" role="form">
-     <h1> Edytuj swój quiz! </h1>
-                <form class="documentForm" method="post" action="" enctype="multipart/form-data">       //TUTAJ ZMIEŃ, żeby edytował rzeczywiście :)
-                    <input type="text" name="_db" id="_db" placeholder="Database ID" value="testdb"/>
-                    <input type="text" name="_id" id="_id" placeholder="Document ID" value="images"/>
-                    <input type="text" name="_rev" id="_rev" placeholder="Revision ID" />
-                    <input type="file" name="_attachments" id="_attachments" multiple="multiple" />
-                    <input type="submit" class="Submit" value="Submit" />
-  </form>
+    <div id="create-message" class="content active">
+        <h1> Edytuj swój quiz! </h1>
+        <form class="documentForm" method="post" action="" enctype="multipart/form-data">
+            <input type="text" name="_title" id="_title" placeholder="Title" multiple="multiple" />
+            <input type="text" name="_description" id="_description" placeholder="Description" multiple="multiple" />
+            <input type="text" name="_rev" class="_rev" placeholder="Revision ID" value="ysdkskdf;ksldkf" style="display: none"/>
+            <input type="file" class="fileUpload" name="_attachments" id="_attachments" multiple="multiple" />
+            <input type="submit" class="Submit" value="Submit"  style="display: none" />
+        </form>
+        <form class="documentForm2" method="post" action="" enctype="multipart/form-data">
+            <input type="text" name="_rev" class="_rev" placeholder="Revision ID" value="ysdkskdf;ksldkf" style="display: none"/>
+            <input type="file" class ="fileUpload" name="_attachments" id="_attachments2" multiple="multiple" />
+            <input type="submit" class="Submit" value="Submit"/>
+        </form>
+    </div>
   </script>
 
-  <script id="recent-messages" type="text/x-mustache" charset="utf-8">
-        <ul class="list-group" id="items">
-          {{#items}}
-            <li class="list-group-item">
-              <p>{{message}}</p>
-              <div><div class="name"><i>{{nickname}}</i></div></div>
-              <div style="clear:left;"></div>
-            </li>
-          {{/items}}
-        </ul>
-  </script>
   <script src="script/app.js"></script>
 
 

@@ -200,7 +200,7 @@ input.fileUpload {
     border: 0px;
 }
 
-#new-game {
+#new-game, #create-message {
     text-align: center;
     max-width: 500px;
     text-align: center;
@@ -296,4 +296,33 @@ p#questionnaire-title{
     top: -60px;
     right: 50px;
     font-size: 80px;
+}
+
+.login {
+    display: table-caption;
+    text-align: center;
+    max-width: 500px;
+    margin: auto;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    border-radius: 10px 10px 10px 10px;
+    -moz-border-radius: 10px 10px 10px 10px;
+    -webkit-border-radius: 10px 10px 10px 10px;
+    border: 1px solid #E5E5E5;
+    background:rgba(0,0,0,0.5);
+    color: white;
+    padding-left: 30px;
+    padding-right: 40px;
+}
+
+.login input {
+    margin: 8px;
+    padding: 7px;
+    width: 200px;
+    border-radius: 10px 10px 10px 10px;
+    -moz-border-radius: 10px 10px 10px 10px;
+    -webkit-border-radius: 10px 10px 10px 10px;
+    border: 1px solid #000000;
+    margin-left: auto;
+    margin-right: auto;
 }
