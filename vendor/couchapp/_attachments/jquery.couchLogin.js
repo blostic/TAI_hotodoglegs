@@ -1,17 +1,3 @@
-// Copyright Chris Anderson 2011
-// Apache 2.0 License
-// jquery.couchLogin.js
-// 
-// Example Usage (loggedIn and loggedOut callbacks are optional): 
-//    $("#mylogindiv").couchLogin({
-//        loggedIn : function(userCtx) {
-//            alert("hello "+userCtx.name);
-//        }, 
-//        loggedOut : function() {
-//            alert("bye bye");
-//        }
-//    });
-
 (function($) {
     $.fn.couchLogin = function(opts) {
         var elem = $(this);
@@ -59,7 +45,7 @@
             });
             return false;      
         });
-    }
+    };
     var templates = {
         adminParty : '<p><strong>Admin party, everyone is admin!</strong> Fix this in <a href="/_utils/index.html">Futon</a> before proceeding.</p>',
         loggedOut : '<a href="#login">Login</a>',

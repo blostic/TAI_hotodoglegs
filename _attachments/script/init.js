@@ -75,6 +75,25 @@ var addResultBox = function (hotDogFirst) {
     }
 };
 
+var addQuestionnairesToComboBox = function (questionnaires) {
+    var comboBox = $('#questionnaires_in_dbs');
+    for (questionnaire in questionnaires) {
+        var select = $('<option>' + questionnaires[questionnaire].title + '</option>');
+        select.attr('id',  questionnaires[questionnaire]._id);
+        select.attr('value', questionnaires[questionnaire].title);
+        select.appendTo(comboBox);
+    }
+    comboBox.change(function(){
+        $( "select#questionnaires_in_dbs option:selected" ).each(function() {
+            console.log($(this).attr('id'));
+            var selected = questionnaires[$(this).attr('id')];
+            $("#update_title").val(selected['title']);
+            $("#update_description").val(selected['description']);
+        });
+    });
+};
+
+
 // creating main page
 var createGamePage = function (questionnaire) {
     $('#game-question').empty();
@@ -129,9 +148,9 @@ var getPseudoUniqueID = function () {
     return Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
 };
 
-var generateQuestionnaireDocument = function (authorId, title, description, legSrc, hotDogSrc, hot_dog_points, legs_points) {
+var generateQuestionnaireDocument = function (id, authorId, title, description, legSrc, hotDogSrc, hot_dog_points, legs_points) {
     var newDocument = {};
-    newDocument['_id'] = getPseudoUniqueID();
+    newDocument['_id'] = id;
     newDocument['author'] = authorId;
     newDocument['title'] = title;
     newDocument['description'] = description;
@@ -237,13 +256,13 @@ $(document).ready(function () {
     });
 
     // submit new questionnaire
-    $('form.documentForm2').submit(function (e) {
+    $('#new-game form.documentForm2').submit(function (e) {
         e.preventDefault();
-        uploadImageFromForm('form.documentForm', function(){
-            uploadImageFromForm('form.documentForm2', function(){
+        uploadImageFromForm('#new-game form.documentForm', function(){
+            uploadImageFromForm('#new-game form.documentForm2', function(){
                 var legSrc = $("form input#_attachments")[0].files[0].name;
                 var hotDog = $("form input#_attachments2")[0].files[0].name;
-                var document = generateQuestionnaireDocument(userID, $('#_title').val(), $('#_description').val(), legSrc, hotDog, 0, 0);
+                var document = generateQuestionnaireDocument(getPseudoUniqueID(), userID, $('#_title').val(), $('#_description').val(), legSrc, hotDog, 0, 0);
                 expandDocument(questionnairesCollectionName, document);
                 alert("Your questionnaires was submitted.");
             })
